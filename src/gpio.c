@@ -33,9 +33,9 @@ SPDX-License-Identifier: MIT
 /* === Headers files inclusions =============================================================== */
 
 #include "gpio.h"
+#include "hal_gpio.h"
 #include <string.h>
 #include <stddef.h>
-#include <config.h>
 
 /* === Macros definitions ====================================================================== */
 
@@ -132,7 +132,7 @@ void gpioSetOutput(gpio_t self, bool output) {
 
 void gpioSetState(gpio_t self, bool state) {
     if (self->output) {
-        hal_gpio_set_output(self->port, self->bit, output);
+        hal_gpio_set_output(self->port, self->bit, state);
     }
 }
 
