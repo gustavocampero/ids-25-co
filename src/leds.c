@@ -1,4 +1,5 @@
 #include "leds.h"
+#include "errores.h"
 
 #define ALL_LED_OFF       0x0000
 #define FIRST_BIT         1
@@ -15,9 +16,17 @@ void LedsInitDriver(uint16_t * puerto_virtual) {
 }
 
 void LedsTurnOn(int led) {
+    if (led < 1 || led > 16) {
+        RegistrarMensaje(ALERTA, __func__, __LINE__, "El led no es valido");
+        return;
+    }
     *puerto |= LedToMask(led);
 }
 
 void LedsTurnOff(int led) {
+    if (led < 1 || led > 16) {
+        RegistrarMensaje(ALERTA, __func__, __LINE__, "El led no es valido");
+        return;
+    }
     *puerto &= ~LedToMask(led);
 }
