@@ -36,14 +36,50 @@ void test_prender_mas_de_un_led_apagar_uno_y_verificar_que_el_resto_sigue_sin_ca
     TEST_ASSERT_EQUAL_HEX16(1 << 4, puerto_virtual);
 }
 
-void test_tratar_de_manipular_led_fuera_de_rango_y_comprobar_que_se_genera_error(void) {
-    RegistrarMensaje_Expect(ALERTA, "LedsTurnOn", 0, "El led no es valido");
+void test_tratar_de_prender_led_fuera_de_rango_y_comprobar_que_se_genera_error(void) {
+    RegistrarMensaje_Expect(ALERTA, "IsLedValid", 0, "El led no es valido");
     RegistrarMensaje_IgnoreArg_linea();
     LedsTurnOn(0);
     TEST_ASSERT_EQUAL_HEX16(0x0000, puerto_virtual);
 
-    RegistrarMensaje_Expect(ALERTA, "LedsTurnOff", 0, "El led no es valido");
+    RegistrarMensaje_Expect(ALERTA, "IsLedValid", 0, "El led no es valido");
+    RegistrarMensaje_IgnoreArg_linea();
+    LedsTurnOn(17);
+    TEST_ASSERT_EQUAL_HEX16(0x0000, puerto_virtual);
+}
+
+void test_tratar_de_apagar_led_fuera_de_rango_y_comprobar_que_se_genera_error(void) {
+    RegistrarMensaje_Expect(ALERTA, "IsLedValid", 0, "El led no es valido");
+    RegistrarMensaje_IgnoreArg_linea();
+    LedsTurnOff(0);
+    TEST_ASSERT_EQUAL_HEX16(0x0000, puerto_virtual);
+
+    RegistrarMensaje_Expect(ALERTA, "IsLedValid", 0, "El led no es valido");
     RegistrarMensaje_IgnoreArg_linea();
     LedsTurnOff(17);
     TEST_ASSERT_EQUAL_HEX16(0x0000, puerto_virtual);
+}
+
+void test_prender_todos_los_leds(void) {
+    LedsTurnOnAll();
+    TEST_ASSERT_EQUAL_HEX16(0xFFFF, puerto_virtual);
+}
+
+void test_apagar_todos_los_leds(void) {
+    LedsTurnOnAll();
+    LedsTurnOffAll();
+    TEST_ASSERT_EQUAL_HEX16(0x0000, puerto_virtual);
+}
+
+void test_consultar_el_estado_de_un_led_encendido(void) {
+    LedsTurnOn(2);
+    uint8_t estado = LedsRead(2);
+    TEST_ASSERT_EQUAL_HEX8(0x01, estado);
+}
+
+void test_consultar_el_estado_de_un_led_apagado(void) {
+    LedsTurnOnAll();
+    LedsTurnOff(2);
+    uint8_t estado = LedsRead(2);
+    TEST_ASSERT_EQUAL_HEX8(0x00, estado);
 }
