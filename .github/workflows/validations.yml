@@ -37,7 +37,7 @@ jobs:
           path: build/artifacts/gcov/junit_tests_report.xml
           reporter: jest-junit
       - name: Code Coverage Report
-        uses: irongut/CodeCoveraqeSummarv@v1.3.0
+        uses: irongut/CodeCoverageSummary@v1.3.0
         with:
           filename: build/artifacts/gcov/gcovr/GcovCoverageCobertura.xml
           badge: true
