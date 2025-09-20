@@ -83,3 +83,10 @@ void test_consultar_el_estado_de_un_led_apagado(void) {
     uint8_t estado = LedsRead(2);
     TEST_ASSERT_EQUAL_HEX8(0x00, estado);
 }
+
+void test_consultar_el_estado_de_un_led_fuera_de_rango(void) {
+    RegistrarMensaje_Expect(ALERTA, "IsLedValid", 0, "El led no es valido");
+    RegistrarMensaje_IgnoreArg_linea();
+    uint8_t estado = LedsRead(17);
+    TEST_ASSERT_EQUAL_HEX8(0x00, estado);
+}
