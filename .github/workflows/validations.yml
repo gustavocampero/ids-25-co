@@ -54,4 +54,4 @@ jobs:
         if: github.event_name == 'pull_request'
         with:
           recreate: true
-          path: code-coverage-results.nd
+          path: code-coverage-results.md
